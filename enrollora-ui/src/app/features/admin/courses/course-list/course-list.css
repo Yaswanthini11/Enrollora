@@ -490,3 +490,158 @@
     padding: 18px;
   }
 }
+
+/* Course Form */
+
+.course-form-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(35, 25, 60, 0.45);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  padding: 20px;
+}
+
+.course-form {
+  background: white;
+  width: 100%;
+  max-width: 480px;
+  padding: 28px;
+  border-radius: 16px;
+  box-shadow: 0 10px 35px rgba(35, 25, 60, 0.2);
+}
+
+.course-form h2 {
+  color: #302942;
+  margin: 0 0 7px;
+  font-size: 22px;
+}
+
+.course-form > p {
+  color: #898397;
+  font-size: 13px;
+  margin-bottom: 22px;
+}
+
+.course-form form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.course-form label {
+  color: #514963;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.course-form input,
+.course-form select {
+  padding: 11px 12px;
+  border: 1px solid #e5e0ed;
+  border-radius: 8px;
+  font-size: 14px;
+  outline: none;
+  margin-bottom: 8px;
+}
+
+.course-form input:focus,
+.course-form select:focus {
+  border-color: #8b5cf6;
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.btn-cancel,
+.btn-save {
+  padding: 10px 17px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  font-weight: 700;
+}
+
+.btn-cancel {
+  background: #f0eef3;
+  color: #625b70;
+}
+
+.btn-save {
+  background: #8b5cf6;
+  color: white;
+}
+
+.btn-save:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.form-error {
+  color: #dc4444;
+  font-size: 13px;
+}
+
+/* Edit Course Button */
+
+.btn-edit {
+  background: #f0eaff;
+  color: #8050d8;
+  border: none;
+  padding: 8px 15px;
+  border-radius: 7px;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.btn-edit:hover {
+  background: #e2d5ff;
+}
+
+/* Course Actions */
+
+.course-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.btn-deactivate {
+  background: #ffe8e8;
+  color: #dc4444;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 7px;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.btn-deactivate:hover {
+  background: #ffd5d5;
+}
+
+.inactive-label {
+  color: #898397;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.form-success {
+  background: #e9f8ef;
+  color: #16834a;
+  padding: 12px 16px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 700;
+  margin-bottom: 18px;
+}
+
