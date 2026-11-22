@@ -1,10 +1,16 @@
+
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, tap } from 'rxjs';
+import { Observable, tap, map } from 'rxjs';
 
 import { environment } from '../../../environments/environment';
 
-import { LoginRequest, LoginResponse, RegisterStudentRequest, ApiMessage } from './auth.models';
+import {
+  LoginRequest,
+  LoginResponse,
+  RegisterStudentRequest,
+  ApiMessage
+} from './auth.models';
 
 import { TokenService } from './token.service';
 
@@ -17,8 +23,24 @@ export class AuthService {
 
   private apiUrl = `${environment.apiUrl}/auth`;
 
-  login(request: LoginRequest): Observable<LoginResponse> {
-    return this.http.post<LoginResponse>(`${this.apiUrl}/login`, request).pipe(
+  login(
+    request: LoginRequest,
+    expectedRole: string
+  ): Observable<LoginResponse> {
+    return this.http.post<LoginResponse>(
+      `${this.apiUrl}/login`,
+      request
+    ).pipe(
+      map((response) => {
+        if (response.role !== expectedRole) {
+          throw new Error(
+            'Please select the correct login type for this account.'
+          );
+        }
+
+        return response;
+      }),
+
       tap((response) => {
         this.tokenService.setToken(response.token);
         this.tokenService.setRole(response.role);

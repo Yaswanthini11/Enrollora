@@ -1,13 +1,53 @@
+
 <div class="container mt-5">
   <div class="row justify-content-center">
     <div class="col-md-5">
+
       <div class="card shadow">
         <div class="card-body p-4">
-          <h3 class="text-center mb-4">Enrollora Login</h3>
 
+          <!-- Header -->
+          <h3 class="text-center mb-2">
+            Enrollora Login
+          </h3>
+
+          <p class="text-center text-muted mb-4">
+            Select your account type
+          </p>
+
+          <!-- Student / Admin Selection -->
+          <div class="d-flex gap-2 mb-4">
+
+            <button
+              type="button"
+              class="btn w-50"
+              [class.btn-primary]="selectedRole === 'Student'"
+              [class.btn-outline-primary]="selectedRole !== 'Student'"
+              (click)="selectRole('Student')"
+            >
+              Student
+            </button>
+
+            <button
+              type="button"
+              class="btn w-50"
+              [class.btn-primary]="selectedRole === 'Administrator'"
+              [class.btn-outline-primary]="selectedRole !== 'Administrator'"
+              (click)="selectRole('Administrator')"
+            >
+              Admin
+            </button>
+
+          </div>
+
+          <!-- Login Form -->
           <form (ngSubmit)="onLogin()" #loginForm="ngForm">
+
+            <!-- Email -->
             <div class="mb-3">
-              <label class="form-label">Email</label>
+              <label class="form-label">
+                Email
+              </label>
 
               <input
                 type="email"
@@ -20,8 +60,11 @@
               />
             </div>
 
+            <!-- Password -->
             <div class="mb-3">
-              <label class="form-label">Password</label>
+              <label class="form-label">
+                Password
+              </label>
 
               <input
                 type="password"
@@ -33,12 +76,14 @@
               />
             </div>
 
+            <!-- Error Message -->
             @if (errorMessage) {
               <div class="alert alert-danger">
                 {{ errorMessage }}
               </div>
             }
 
+            <!-- Login Button -->
             <button
               type="submit"
               class="btn btn-primary w-100"
@@ -47,12 +92,27 @@
               @if (isLoading) {
                 Logging in...
               } @else {
-                Login
+                Login as {{ selectedRole }}
               }
             </button>
+
           </form>
+
+          <!-- Registration Link -->
+          <div class="text-center mt-3">
+            Don't have an account?
+
+            <a
+              routerLink="/register"
+              class="text-primary fw-bold text-decoration-none"
+            >
+              Register
+            </a>
+          </div>
+
         </div>
       </div>
+
     </div>
   </div>
 </div>
