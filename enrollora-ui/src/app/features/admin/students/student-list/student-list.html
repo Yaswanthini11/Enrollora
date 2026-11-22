@@ -137,7 +137,7 @@
           </thead>
 
           <tbody>
-            @for (student of students; track student.studentId) {
+           @for (student of students(); track student.studentId) {
               <tr>
                 <td>
                   <div class="student-info">
@@ -234,10 +234,10 @@
     <!-- Pagination -->
     <div class="pagination-container">
       <div class="pagination-info">
-        Showing {{ students.length }} of {{ totalRecords }} students
-      </div>
+  Showing {{ students().length }} of {{ totalRecords }} students
+</div>
 
-      <div class="page-size-selector">
+<div class="page-size-selector">
         <label for="pageSize">Rows per page:</label>
 
         <select
