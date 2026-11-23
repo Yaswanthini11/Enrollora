@@ -8,14 +8,15 @@
     <div class="student-count">Total Students: {{ totalRecords }}</div>
   </div>
 
-  @if (isLoading) {
+  @if (isLoading())  {
     <div class="loading-state">
       <div class="spinner-border text-primary"></div>
       <p>Loading students...</p>
     </div>
-  } @else if (errorMessage) {
+  } 
+ @else if (errorMessage()) {
     <div class="alert alert-danger">
-      {{ errorMessage }}
+      {{ errorMessage() }}
       <button class="btn btn-sm btn-outline-danger ms-3" (click)="loadStudents()">Retry</button>
     </div>
   } @else {
@@ -257,7 +258,7 @@
       <div class="pagination-controls">
         <button
           class="btn btn-outline-primary btn-sm"
-          [disabled]="pageNumber === 1 || isLoading"
+          [disabled]="pageNumber === 1 || isLoading()"
           (click)="goToPreviousPage()"
         >
           Previous
@@ -267,7 +268,7 @@
 
         <button
           class="btn btn-outline-primary btn-sm"
-          [disabled]="pageNumber === totalPages || isLoading"
+          [disabled]="pageNumber === totalPages || isLoading()"
           (click)="goToNextPage()"
         >
           Next

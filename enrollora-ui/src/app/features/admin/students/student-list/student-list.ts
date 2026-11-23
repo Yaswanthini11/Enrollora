@@ -18,12 +18,11 @@ export class StudentList implements OnInit {
   private cdr = inject(ChangeDetectorRef);
 
   
-  // Angular Signal
-  students = signal<StudentResponse[]>([]);
-
-
-  isLoading = false;
-  errorMessage = '';
+  
+  // Angular Signals
+students = signal<StudentResponse[]>([]);
+isLoading = signal(false);
+errorMessage = signal('');
 
   pageNumber = 1;
   pageSize = 5;
@@ -49,46 +48,48 @@ export class StudentList implements OnInit {
   }
 
   loadStudents(): void {
-    this.isLoading = true;
-    this.errorMessage = '';
+  this.isLoading.set(true);
+  this.errorMessage.set('');
 
-    this.studentService.getStudents(this.pageNumber, this.pageSize, this.filters).subscribe({
-      next: (response) => {
-       this.students.set(response.items);
-        this.totalRecords = response.totalRecords;
-        this.totalPages = response.totalPages;
-        this.pageNumber = response.pageNumber;
-        this.pageSize = response.pageSize;
-        this.isLoading = false;
-        this.cdr.markForCheck();
-      },
+  this.studentService.getStudents(
+    this.pageNumber,
+    this.pageSize,
+    this.filters
+  ).subscribe({
+    next: (response) => {
+      this.students.set(response.items);
+      this.totalRecords = response.totalRecords;
+      this.totalPages = response.totalPages;
+      this.pageNumber = response.pageNumber;
+      this.pageSize = response.pageSize;
+      this.isLoading.set(false);
+      this.cdr.markForCheck();
+    },
 
-      error: (error) => {
-        console.error('Failed to load students:', error);
-        this.errorMessage = 'Unable to load students.';
-        this.isLoading = false;
-        this.cdr.markForCheck();
-      },
-    });
+    error: (error) => {
+      console.error('Failed to load students:', error);
+      this.errorMessage.set('Unable to load students.');
+      this.isLoading.set(false);
+      this.cdr.markForCheck();
+    },
+  });
+}
+approveStudent(id: number): void {
+  if (!confirm('Are you sure you want to approve this student?')) {
+    return;
   }
 
-  approveStudent(id: number): void {
-    if (!confirm('Are you sure you want to approve this student?')) {
-      return;
-    }
-
-    this.studentService.approveStudent(id).subscribe({
-      next: (response) => {
-        alert(response.message);
-        this.loadStudents();
-      },
-      error: (error) => {
-        console.error(error);
-        alert('Unable to approve student.');
-      },
-    });
-  }
-
+  this.studentService.approveStudent(id).subscribe({
+    next: (response) => {
+      alert(response.message);
+      this.loadStudents();
+    },
+    error: (error) => {
+      console.error(error);
+      alert('Unable to approve student.');
+    },
+  });
+}
   rejectStudent(id: number): void {
     if (!confirm('Are you sure you want to reject this student?')) {
       return;
