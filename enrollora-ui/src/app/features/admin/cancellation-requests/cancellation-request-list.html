@@ -1,0 +1,205 @@
+
+<div class="cancellation-page">
+
+  <div class="page-heading">
+    <div>
+      <h2>Cancellation Requests</h2>
+      <p>Review and manage student cancellation requests.</p>
+    </div>
+
+    <div class="request-count">
+      Total Requests: {{ totalRecords }}
+    </div>
+  </div>
+
+  @if (successMessage()) {
+    <div class="alert alert-success">
+      {{ successMessage() }}
+    </div>
+  }
+
+  @if (errorMessage()) {
+    <div class="alert alert-danger">
+      {{ errorMessage() }}
+    </div>
+  }
+
+  <!-- Search and Filters -->
+  <div class="filter-section">
+
+    <div class="search-box">
+      <input
+        type="text"
+        class="form-control"
+        placeholder="Search by student name or email"
+        [(ngModel)]="searchTerm"
+        (keyup.enter)="searchRequests()"
+      />
+
+      <button
+        class="btn btn-primary"
+        (click)="searchRequests()"
+      >
+        Search
+      </button>
+    </div>
+
+    <div class="status-filter">
+      <label for="statusFilter">Filter by status:</label>
+
+      <select
+        id="statusFilter"
+        class="form-select"
+        [ngModel]="selectedStatus"
+        (ngModelChange)="filterByStatus($event)"
+      >
+        <option [ngValue]="null">All Requests</option>
+        <option [ngValue]="0">Pending</option>
+        <option [ngValue]="1">Approved</option>
+        <option [ngValue]="2">Rejected</option>
+      </select>
+    </div>
+
+  </div>
+
+  <!-- Loading -->
+  @if (isLoading()) {
+    <div class="loading-state">
+      <div class="spinner-border text-primary"></div>
+      <p>Loading cancellation requests...</p>
+    </div>
+  }
+
+  <!-- Requests Table -->
+  @if (!isLoading()) {
+    <div class="table-responsive">
+      <table class="table table-hover align-middle">
+
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Student</th>
+            <th>Email</th>
+            <th>Course</th>
+            <th>Reason</th>
+            <th>Requested At</th>
+            <th>Status</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          @for (request of cancellationRequests(); track request.cancellationRequestId) {
+            <tr>
+              <td>{{ request.cancellationRequestId }}</td>
+
+              <td>{{ request.studentName }}</td>
+
+              <td>{{ request.studentEmail }}</td>
+
+              <td>{{ request.courseName }}</td>
+
+              <td class="reason-cell">
+                {{ request.reason }}
+              </td>
+
+              <td>
+                {{ request.requestedAt | date:'dd-MM-yyyy' }}
+              </td>
+
+              <td>
+                <span
+                  class="status-badge"
+                  [ngClass]="getStatusClass(request.status)"
+                >
+                  {{ getStatusLabel(request.status) }}
+                </span>
+              </td>
+
+              <td>
+                @if (request.status === 0) {
+                  <div class="action-buttons">
+                    <button
+                      class="btn btn-sm btn-success"
+                      [disabled]="processingId() === request.cancellationRequestId"
+                      (click)="approveRequest(request)"
+                    >
+                      Approve
+                    </button>
+
+                    <button
+                      class="btn btn-sm btn-danger"
+                      [disabled]="processingId() === request.cancellationRequestId"
+                      (click)="rejectRequest(request)"
+                    >
+                      Reject
+                    </button>
+                  </div>
+                } @else {
+                  <span class="reviewed-text">Reviewed</span>
+                }
+              </td>
+            </tr>
+          } @empty {
+            <tr>
+              <td colspan="8" class="empty-state">
+                No cancellation requests found.
+              </td>
+            </tr>
+          }
+        </tbody>
+
+      </table>
+    </div>
+  }
+
+  <!-- Pagination -->
+  @if (!isLoading() && totalRecords > 0) {
+    <div class="pagination-section">
+
+      <div class="pagination-info">
+        Showing {{ cancellationRequests().length }} of {{ totalRecords }} requests
+      </div>
+
+      <div class="page-size-selector">
+        <label for="pageSize">Rows per page:</label>
+
+        <select
+          id="pageSize"
+          class="form-select form-select-sm"
+          [ngModel]="pageSize"
+          (ngModelChange)="changePageSize(+$event)"
+        >
+          <option [ngValue]="5">5</option>
+          <option [ngValue]="10">10</option>
+          <option [ngValue]="20">20</option>
+          <option [ngValue]="50">50</option>
+        </select>
+      </div>
+
+      <div class="pagination-controls">
+        <button
+          class="btn btn-outline-primary btn-sm"
+          [disabled]="pageNumber <= 1"
+          (click)="previousPage()"
+        >
+          Previous
+        </button>
+
+        <span>
+          Page {{ pageNumber }} of {{ totalPages }}
+        </span>
+
+        <button
+          class="btn btn-outline-primary btn-sm"
+          [disabled]="pageNumber >= totalPages"
+          (click)="nextPage()"
+        >
+          Next
+        </button>
+      </div>
+
+    </div>
+  }
+
+</div>

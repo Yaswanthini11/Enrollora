@@ -42,6 +42,13 @@ export const routes: Routes = [
             (m) => m.EnrollmentListComponent,
           ),
       },
+        {
+  path: 'cancellation-requests',
+  loadComponent: () =>
+    import('./features/admin/cancellation-requests/cancellation-request-list')
+      .then(m => m.CancellationRequestList),
+},
+
     ],
   },
   {
@@ -75,6 +82,12 @@ export const routes: Routes = [
         redirectTo: 'courses',
         pathMatch: 'full',
       },
+      {
+  path: 'cancellation-requests',
+  loadComponent: () =>
+    import('./features/student/cancellation-requests/cancellation-request-list')
+      .then((m) => m.CancellationRequestList),
+},
     ],
   },
   {
