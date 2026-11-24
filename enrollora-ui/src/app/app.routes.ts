@@ -63,20 +63,24 @@ export const routes: Routes = [
         loadComponent: () =>
           import('./features/student/dashboard/dashboard').then((m) => m.Dashboard),
       },
+     {
+  path: 'courses',
+  loadComponent: () =>
+    import('./features/student/courses/available-courses')
+      .then((m) => m.AvailableCourses),
+},
       {
-        path: 'courses',
-        loadComponent: () =>
-          import('./features/enrollments/student/available-courses/available-courses').then(
-            (m) => m.AvailableCourses,
-          ),
-      },
-      {
-        path: 'enrollments',
-        loadComponent: () =>
-          import('./features/enrollments/student/my-enrollments/my-enrollments').then(
-            (m) => m.MyEnrollments,
-          ),
-      },
+  path: 'enrollments',
+  loadComponent: () =>
+    import('./features/student/enrollments/my-enrollments')
+      .then((m) => m.MyEnrollments),
+},
+{
+  path: 'profile',
+  loadComponent: () =>
+    import('./features/student/profile/profile')
+      .then((m) => m.Profile),
+},
       {
         path: '',
         redirectTo: 'courses',
@@ -90,6 +94,7 @@ export const routes: Routes = [
 },
     ],
   },
+ 
   {
     path: '',
     redirectTo: 'login',

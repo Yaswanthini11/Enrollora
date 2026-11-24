@@ -7,7 +7,8 @@ import { CourseResponse } from '../../admin/courses/course.models';
 import { CourseService } from '../../admin/courses/course.service';
 import { EnrollmentResponse } from '../../enrollments/enrollment.models';
 import { EnrollmentService } from '../../enrollments/enrollment.service';
-
+import { StudentResponse } from '../../admin/students/student.models';
+import { StudentService } from '../../admin/students/student.service';
 @Component({
   selector: 'app-dashboard',
   standalone: true,
@@ -18,7 +19,7 @@ import { EnrollmentService } from '../../enrollments/enrollment.service';
 export class Dashboard implements OnInit {
   private readonly courseService = inject(CourseService);
   private readonly enrollmentService = inject(EnrollmentService);
-
+  
   availableCourses = signal<CourseResponse[]>([]);
   recentEnrollments = signal<EnrollmentResponse[]>([]);
 
