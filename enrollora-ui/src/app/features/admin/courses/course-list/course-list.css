@@ -645,3 +645,98 @@
   margin-bottom: 18px;
 }
 
+
+/* Course Filters */
+.filter-card {
+  background: #ffffff;
+  padding: 24px;
+  border-radius: 12px;
+  margin-bottom: 24px;
+  border: 1px solid #e8eaf0;
+}
+
+.filter-header {
+  margin-bottom: 20px;
+}
+
+.filter-header h2 {
+  font-size: 18px;
+  margin: 0 0 6px;
+}
+
+.filter-header p {
+  color: #777;
+  font-size: 13px;
+  margin: 0;
+}
+
+.filter-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18px;
+}
+
+.filter-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.filter-group label {
+  font-size: 13px;
+  font-weight: 600;
+  color: #444;
+}
+
+.filter-group input,
+.filter-group select {
+  width: 100%;
+  padding: 11px 12px;
+  border: 1px solid #dcdfe6;
+  border-radius: 7px;
+  font-size: 13px;
+  outline: none;
+  box-sizing: border-box;
+}
+
+.filter-group input:focus,
+.filter-group select:focus {
+  border-color: #6c63ff;
+}
+
+.filter-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 22px;
+}
+
+.btn-filter,
+.btn-reset {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 7px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.btn-filter {
+  background: #635bdb;
+  color: white;
+}
+
+.btn-reset {
+  background: #eeeeF3;
+  color: #444;
+}
+
+@media (max-width: 768px) {
+  .filter-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 480px) {
+  .filter-grid {
+    grid-template-columns: 1fr;
+  }
+}

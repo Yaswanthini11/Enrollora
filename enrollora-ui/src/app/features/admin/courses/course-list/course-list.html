@@ -136,6 +136,118 @@
   <!-- Course Table -->
   <div class="table-card">
 
+
+<!-- Course Filters -->
+<div class="filter-card">
+  <div class="filter-header">
+    <div>
+      <h2>Search and Filters</h2>
+      <p>Find courses using the available filters.</p>
+    </div>
+  </div>
+
+  <div class="filter-grid">
+
+    <div class="filter-group">
+      <label>Search Course</label>
+      <input
+        type="text"
+        [ngModel]="searchText()"
+        (ngModelChange)="searchText.set($event)"
+        placeholder="Enter course name"
+      />
+    </div>
+
+    <div class="filter-group">
+      <label>Course Status</label>
+      <select
+        [ngModel]="selectedStatus()"
+        (ngModelChange)="selectedStatus.set($event === '' ? null : $event === 'true')"
+      >
+        <option value="">All Status</option>
+        <option value="true">Active</option>
+        <option value="false">Inactive</option>
+      </select>
+    </div>
+
+    <div class="filter-group">
+      <label>Availability</label>
+      <select
+        [ngModel]="selectedAvailability()"
+        (ngModelChange)="selectedAvailability.set($event)"
+      >
+        <option value="">All Courses</option>
+        <option value="available">Available</option>
+        <option value="full">Full</option>
+      </select>
+    </div>
+
+    <div class="filter-group">
+      <label>Minimum Fees</label>
+      <input
+        type="number"
+        min="0"
+        [ngModel]="minFees()"
+        (ngModelChange)="minFees.set($event === '' || $event === null ? null : +$event)"
+        placeholder="Minimum fees"
+      />
+    </div>
+
+    <div class="filter-group">
+      <label>Maximum Fees</label>
+      <input
+        type="number"
+        min="0"
+        [ngModel]="maxFees()"
+        (ngModelChange)="maxFees.set($event === '' || $event === null ? null : +$event)"
+        placeholder="Maximum fees"
+      />
+    </div>
+
+    <div class="filter-group">
+      <label>Minimum Capacity</label>
+      <input
+        type="number"
+        min="0"
+        [ngModel]="minCapacity()"
+        (ngModelChange)="minCapacity.set($event === '' || $event === null ? null : +$event)"
+        placeholder="Minimum capacity"
+      />
+    </div>
+
+    <div class="filter-group">
+      <label>Maximum Capacity</label>
+      <input
+        type="number"
+        min="0"
+        [ngModel]="maxCapacity()"
+        (ngModelChange)="maxCapacity.set($event === '' || $event === null ? null : +$event)"
+        placeholder="Maximum capacity"
+      />
+    </div>
+
+  </div>
+
+  <div class="filter-actions">
+    <button
+      type="button"
+      class="btn-filter"
+      (click)="applyFilters()"
+    >
+      Apply Filters
+    </button>
+
+    <button
+      type="button"
+      class="btn-reset"
+      (click)="resetFilters()"
+    >
+      Reset
+    </button>
+  </div>
+</div>
+
+
     <div class="table-header">
       <div>
         <h2>All Courses</h2>

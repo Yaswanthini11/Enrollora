@@ -4,7 +4,7 @@ import { FormsModule } from '@angular/forms';
 
 import { CourseService } from '../course.service';
 import { CourseResponse, SaveCourseRequest } from '../course.models';
-
+import { CourseFilter } from '../course.models';
 @Component({
   selector: 'app-course-list',
   standalone: true,
@@ -24,6 +24,15 @@ export class CourseListComponent implements OnInit {
   pageSize = signal(10);
   totalRecords = signal(0);
   totalPages = signal(0);
+
+    // Course filters
+  searchText = signal('');
+  selectedStatus = signal<boolean | null>(null);
+  selectedAvailability = signal('');
+  minFees = signal<number | null>(null);
+  maxFees = signal<number | null>(null);
+  minCapacity = signal<number | null>(null);
+  maxCapacity = signal<number | null>(null);
 
   showForm = signal(false);
   isSaving = signal(false);
@@ -170,11 +179,23 @@ deactivateCourse(course: CourseResponse): void {
     });
   }
 
-  loadCourses(): void {
-    this.isLoading.set(true);
-    this.errorMessage.set('');
+loadCourses(): void {
+  this.isLoading.set(true);
+  this.errorMessage.set('');
 
-    this.courseService.getCourses(this.pageNumber(), this.pageSize()).subscribe({
+  const filters: CourseFilter = {
+    search: this.searchText().trim(),
+    isActive: this.selectedStatus(),
+    availability: this.selectedAvailability(),
+    minFees: this.minFees(),
+    maxFees: this.maxFees(),
+    minCapacity: this.minCapacity(),
+    maxCapacity: this.maxCapacity(),
+  };
+
+  this.courseService
+    .getCourses(this.pageNumber(), this.pageSize(), filters)
+    .subscribe({
       next: (response) => {
         this.courses.set(response.items);
         this.totalRecords.set(response.totalRecords);
@@ -187,8 +208,25 @@ deactivateCourse(course: CourseResponse): void {
         this.isLoading.set(false);
       },
     });
-  }
+}
 
+applyFilters(): void {
+  this.pageNumber.set(1);
+  this.loadCourses();
+}
+
+resetFilters(): void {
+  this.searchText.set('');
+  this.selectedStatus.set(null);
+  this.selectedAvailability.set('');
+  this.minFees.set(null);
+  this.maxFees.set(null);
+  this.minCapacity.set(null);
+  this.maxCapacity.set(null);
+
+  this.pageNumber.set(1);
+  this.loadCourses();
+}
   nextPage(): void {
     if (this.pageNumber() < this.totalPages()) {
       this.pageNumber.update(page => page + 1);
