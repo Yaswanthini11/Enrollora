@@ -1,20 +1,28 @@
+
 import { Component, OnInit, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 
 import { EnrollmentService } from '../../enrollment.service';
-import { EnrollmentResponse } from '../../enrollment.models';
-
+import {
+  EnrollmentResponse,
+  EnrollmentFilter,
+} from '../../enrollment.models';
+import { CourseService } from '../../../admin/courses/course.service';
+import { CourseResponse } from '../../../admin/courses/course.models';
 @Component({
   selector: 'app-enrollment-list',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, FormsModule],
   templateUrl: './enrollment-list.html',
   styleUrl: './enrollment-list.css',
 })
 export class EnrollmentListComponent implements OnInit {
   private enrollmentService = inject(EnrollmentService);
+  private courseService = inject(CourseService);
 
   enrollments = signal<EnrollmentResponse[]>([]);
+  courses = signal<CourseResponse[]>([]);
 
   isLoading = signal(false);
   errorMessage = signal('');
@@ -24,28 +32,72 @@ export class EnrollmentListComponent implements OnInit {
   totalRecords = signal(0);
   totalPages = signal(0);
 
+  filters: EnrollmentFilter = {
+    search: '',
+    courseId: null,
+    status: null,
+    fromDate: '',
+    toDate: '',
+  };
+
   ngOnInit(): void {
+    this.loadCourses();
     this.loadEnrollments();
+  }
+
+  loadCourses(): void {
+    this.courseService.getCourses(1, 100).subscribe({
+      next: (response) => {
+        this.courses.set(response.items);
+      },
+      error: (error) => {
+        console.error('Error loading courses:', error);
+      },
+    });
   }
 
   loadEnrollments(): void {
     this.isLoading.set(true);
     this.errorMessage.set('');
 
-    this.enrollmentService.getEnrollments(this.pageNumber(), this.pageSize()).subscribe({
-      next: (response) => {
-        this.enrollments.set(response.items);
-        this.totalRecords.set(response.totalRecords);
-        this.totalPages.set(response.totalPages);
-        this.isLoading.set(false);
-      },
+    this.enrollmentService
+      .getEnrollments(
+        this.pageNumber(),
+        this.pageSize(),
+        this.filters,
+      )
+      .subscribe({
+        next: (response) => {
+          this.enrollments.set(response.items);
+          this.totalRecords.set(response.totalRecords);
+          this.totalPages.set(response.totalPages);
+          this.isLoading.set(false);
+        },
 
-      error: (error) => {
-        console.error('Error loading enrollments:', error);
-        this.errorMessage.set('Unable to load enrollments.');
-        this.isLoading.set(false);
-      },
-    });
+        error: (error) => {
+          console.error('Error loading enrollments:', error);
+          this.errorMessage.set('Unable to load enrollments.');
+          this.isLoading.set(false);
+        },
+      });
+  }
+
+  applyFilters(): void {
+    this.pageNumber.set(1);
+    this.loadEnrollments();
+  }
+
+  resetFilters(): void {
+    this.filters = {
+      search: '',
+      courseId: null,
+      status: null,
+      fromDate: '',
+      toDate: '',
+    };
+
+    this.pageNumber.set(1);
+    this.loadEnrollments();
   }
 
   nextPage(): void {

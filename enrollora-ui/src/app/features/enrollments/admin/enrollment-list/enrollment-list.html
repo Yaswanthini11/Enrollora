@@ -1,3 +1,4 @@
+
 <div class="enrollment-page">
   <!-- Page Header -->
   <div class="page-header">
@@ -22,6 +23,86 @@
     </div>
   </div>
 
+  <!-- Filters -->
+  <div class="filter-container">
+    <h5>Search and Filters</h5>
+
+    <div class="filter-grid">
+      <div class="filter-group">
+        <label for="search">Search Student</label>
+        <input
+          id="search"
+          type="text"
+          class="form-control"
+          placeholder="Enter name or email"
+          [(ngModel)]="filters.search"
+        />
+      </div>
+
+      <div class="filter-group">
+        <label for="course">Course</label>
+        <select
+          id="course"
+          class="form-select"
+          [(ngModel)]="filters.courseId"
+        >
+          <option [ngValue]="null">All Courses</option>
+
+          @for (course of courses(); track course.courseId) {
+            <option [ngValue]="course.courseId">
+              {{ course.courseName }}
+            </option>
+          }
+        </select>
+      </div>
+
+      <div class="filter-group">
+        <label for="status">Enrollment Status</label>
+        <select
+          id="status"
+          class="form-select"
+          [(ngModel)]="filters.status"
+        >
+          <option [ngValue]="null">All Statuses</option>
+          <option [ngValue]="1">Active</option>
+          <option [ngValue]="2">Cancelled</option>
+        </select>
+      </div>
+
+      <div class="filter-group">
+        <label for="fromDate">From Date</label>
+        <input
+          id="fromDate"
+          type="date"
+          class="form-control"
+          [(ngModel)]="filters.fromDate"
+        />
+      </div>
+
+      <div class="filter-group">
+        <label for="toDate">To Date</label>
+        <input
+          id="toDate"
+          type="date"
+          class="form-control"
+          [(ngModel)]="filters.toDate"
+        />
+      </div>
+    </div>
+
+    <div class="filter-actions">
+      <button class="btn btn-primary" (click)="applyFilters()">
+        <i class="bi bi-search"></i>
+        Apply Filters
+      </button>
+
+      <button class="btn btn-outline-secondary" (click)="resetFilters()">
+        <i class="bi bi-arrow-counterclockwise"></i>
+        Reset
+      </button>
+    </div>
+  </div>
+
   <!-- Loading -->
   @if (isLoading()) {
     <div class="state-message">
@@ -34,7 +115,12 @@
   @if (errorMessage()) {
     <div class="alert alert-danger">
       {{ errorMessage() }}
-      <button class="btn btn-sm btn-outline-danger ms-2" (click)="loadEnrollments()">Retry</button>
+      <button
+        class="btn btn-sm btn-outline-danger ms-2"
+        (click)="loadEnrollments()"
+      >
+        Retry
+      </button>
     </div>
   }
 
@@ -75,7 +161,9 @@
                 <span class="course-name">
                   {{ enrollment.courseName }}
                 </span>
-                <small class="course-id"> Course #{{ enrollment.courseId }} </small>
+                <small class="course-id">
+                  Course #{{ enrollment.courseId }}
+                </small>
               </td>
 
               <td>
@@ -92,7 +180,6 @@
                 </span>
               </td>
             </tr>
-
           } @empty {
             <tr>
               <td colspan="4" class="empty-state">
@@ -107,7 +194,9 @@
 
     <!-- Pagination -->
     <div class="pagination-container">
-      <span> Showing {{ enrollments().length }} of {{ totalRecords() }} enrollments </span>
+      <span>
+        Showing {{ enrollments().length }} of {{ totalRecords() }} enrollments
+      </span>
 
       <div class="pagination-actions">
         <button
@@ -118,7 +207,7 @@
           Previous
         </button>
 
-        <span> Page {{ pageNumber() }} of {{ totalPages() }} </span>
+        <span>Page {{ pageNumber() }} of {{ totalPages() }}</span>
 
         <button
           class="btn btn-outline-secondary"
